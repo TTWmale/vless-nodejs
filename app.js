@@ -6,6 +6,15 @@ const path = require('path');
 const net = require('net');
 const { randomUUID } = require('crypto');
 const { exec, execSync } = require('child_process');
+
+const UUID = process.env.UUID || 'b28f60af-d0b9-4ddf-baaa-7e49c93c380b';
+const uuid = UUID.replace(/-/g, "");
+
+const DOMAIN = process.env.DOMAIN || '';  //项目域名或已反代的域名，不带前缀，建议填已反代的域名
+const NAME = process.env.NAME || 'webhostmost-GCP';
+const port = process.env.PORT || 3000;
+
+
 function ensureModule(name) {
     try {
         require.resolve(name);
@@ -19,7 +28,7 @@ ensureModule('ws');
 const axios = require('axios');
 const { WebSocket, createWebSocketStream } = require('ws');
 const NEZHA_SERVER = process.env.NEZHA_SERVER || '';
-const NEZHA_PORT = process.env.NEZHA_PORT || '';
+const NEZHA_PORT = process.env.NEZHA_PORT || '443';
 const NEZHA_KEY = process.env.NEZHA_KEY || '';
 const NAME = process.env.NAME || os.hostname();
 console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -51,13 +60,13 @@ function ask(question) {
     return new Promise(resolve => rl.question(question, ans => { rl.close(); resolve(ans.trim()); }));
 }
 async function main() {
-    const UUID = await getVariableValue('UUID', '');
+   // const UUID = await getVariableValue('UUID', '');
     console.log('你的UUID:', UUID);
 
-    const PORT = await getVariableValue('PORT', '');
+   // const PORT = await getVariableValue('PORT', '');
     console.log('你的端口:', PORT);
 
-    const DOMAIN = await getVariableValue('DOMAIN', '');
+   // const DOMAIN = await getVariableValue('DOMAIN', '');
     console.log('你的域名:', DOMAIN);
 
     const httpServer = http.createServer((req, res) => {
