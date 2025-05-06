@@ -12,7 +12,7 @@ const uuid = UUID.replace(/-/g, "");
 
 const DOMAIN = process.env.DOMAIN || '';  //项目域名或已反代的域名，不带前缀，建议填已反代的域名
 const NAME = process.env.NAME || 'webhostmost-GCP';
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 
 function ensureModule(name) {
