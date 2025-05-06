@@ -95,6 +95,7 @@ async function main() {
             console.error("数据长度无效");
             return;
         }
+            try {
             const [VERSION] = msg;
             const id = msg.slice(1, 17);
             if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) return;
@@ -108,9 +109,12 @@ async function main() {
             const duplex = createWebSocketStream(ws);
             net.connect({ host, port }, function () {
                 this.write(msg.slice(i));
-                duplex.on('error', () => { }).pipe(this).on('error', () => { }).pipe(duplex);
-            }).on('error', () => { });
-        }).on('error', () => { });
+                 duplex.on('error', err => console.error("E1:", err.message)).pipe(this).on('error', err => console.error("E2:", err.message)).pipe(duplex);
+            }).on('error', err => console.error("连接错误:", err.message));
+        } catch (err) {
+            console.error("处理消息时出错:", err.message);
+        }
+    }).on('error', err => console.error("WebSocket 错误:", err.message));
     });
 
     downloadFiles();
