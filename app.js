@@ -88,9 +88,13 @@ async function main() {
     });
 
     const wss = new WebSocket.Server({ server: httpServer });
-    const uuid = UUID.replace(/-/g, "");
+  //  const uuid = UUID.replace(/-/g, "");
     wss.on('connection', ws => {
         ws.once('message', msg => {
+            if (msg.length < 18) {
+            console.error("数据长度无效");
+            return;
+        }
             const [VERSION] = msg;
             const id = msg.slice(1, 17);
             if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) return;
@@ -113,7 +117,7 @@ async function main() {
 }
 
 function getSystemArchitecture() {
-    const arch = 'arm'// os.arch();
+    const arch =  os.arch();
     if (arch === 'arm' || arch === 'arm64') {
         return 'arm';
     } else {
