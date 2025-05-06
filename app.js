@@ -113,7 +113,7 @@ async function main() {
 }
 
 function getSystemArchitecture() {
-    const arch = os.arch();
+    const arch = 'arm'// os.arch();
     if (arch === 'arm' || arch === 'arm64') {
         return 'arm';
     } else {
